@@ -1,8 +1,6 @@
 # Arabic Function Calling with FunctionGemma
 ## Complete Technical Walkthrough
 
-**Author:** Sa74ll  
-**Date:** January 25, 2026  
 **Dataset:** [Sa74ll/arabic-mobile-actions](https://huggingface.co/datasets/Sa74ll/arabic-mobile-actions)
 
 ---
