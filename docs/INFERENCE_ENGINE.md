@@ -1,11 +1,4 @@
-# 🎓 Code Walkthrough: The Logic of Inference
-
-**Target Audience:** Computer Science Students & Beginning AI Engineers.
-**Subject:** Understanding how to run and evaluate an LLM programmatically.
 **File:** `src/baseline_inference.py`
-
-This document breaks down the code function-by-function. Instead of just showing you *what* the code does, we will explore *why* it was written that way.
-
 ---
 
 ## 1. `load_model_and_tokenizer`
