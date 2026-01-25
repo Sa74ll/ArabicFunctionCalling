@@ -1,0 +1,734 @@
+{
+  "islamic_services": {
+    "get_prayer_times": {
+      "function": {
+        "name": "get_prayer_times",
+        "description": "Get prayer times for a specific city and date / الحصول على مواقيت الصلاة لمدينة وتاريخ محددين",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name / اسم المدينة"
+            },
+            "date": {
+              "type": "string",
+              "description": "Date (today, tomorrow, or specific date) / التاريخ"
+            }
+          },
+          "required": ["city"]
+        }
+      }
+    },
+    "calculate_zakat": {
+      "function": {
+        "name": "calculate_zakat",
+        "description": "Calculate zakat based on wealth amount / حساب الزكاة بناءً على قيمة المال",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "description": "Total wealth amount / إجمالي المبلغ"
+            },
+            "currency": {
+              "type": "string",
+              "description": "Currency type (SAR, EGP, AED, etc.) / العملة"
+            },
+            "wealth_type": {
+              "type": "string",
+              "description": "Type of wealth (cash, gold, stocks, etc.) / نوع المال"
+            }
+          },
+          "required": ["amount"]
+        }
+      }
+    },
+    "get_qibla_direction": {
+      "function": {
+        "name": "get_qibla_direction",
+        "description": "Get Qibla direction from a specific location / الحصول على اتجاه القبلة من موقع محدد",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City or location name / اسم المدينة أو الموقع"
+            },
+            "latitude": {
+              "type": "number",
+              "description": "Latitude coordinate / خط العرض"
+            },
+            "longitude": {
+              "type": "number",
+              "description": "Longitude coordinate / خط الطول"
+            }
+          },
+          "required": []
+        }
+      }
+    },
+    "search_quran": {
+      "function": {
+        "name": "search_quran",
+        "description": "Search for verses in the Quran / البحث عن آيات في القرآن الكريم",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Search query (word or phrase) / كلمة أو عبارة البحث"
+            },
+            "surah": {
+              "type": "string",
+              "description": "Specific surah name (optional) / اسم السورة"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    },
+    "get_hadith": {
+      "function": {
+        "name": "get_hadith",
+        "description": "Search for hadith by topic or text / البحث في الأحاديث النبوية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Search query / كلمة البحث"
+            },
+            "source": {
+              "type": "string",
+              "description": "Hadith source (Bukhari, Muslim, etc.) / مصدر الحديث"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    },
+    "calculate_inheritance": {
+      "function": {
+        "name": "calculate_inheritance",
+        "description": "Calculate Islamic inheritance distribution / حساب توزيع الميراث الإسلامي",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "total_amount": {
+              "type": "number",
+              "description": "Total inheritance amount / إجمالي التركة"
+            },
+            "heirs": {
+              "type": "object",
+              "description": "List of heirs and their relationship / قائمة الورثة وصلة قرابتهم"
+            }
+          },
+          "required": ["total_amount", "heirs"]
+        }
+      }
+    }
+  },
+  "government_services": {
+    "check_visa_status": {
+      "function": {
+        "name": "check_visa_status",
+        "description": "Check visa application status / التحقق من حالة طلب التأشيرة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "visa_number": {
+              "type": "string",
+              "description": "Visa application number / رقم طلب التأشيرة"
+            },
+            "passport_number": {
+              "type": "string",
+              "description": "Passport number / رقم جواز السفر"
+            }
+          },
+          "required": ["visa_number"]
+        }
+      }
+    },
+    "check_iqama_status": {
+      "function": {
+        "name": "check_iqama_status",
+        "description": "Check Iqama (residence permit) validity / التحقق من صلاحية الإقامة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "iqama_number": {
+              "type": "string",
+              "description": "Iqama number / رقم الإقامة"
+            },
+            "id_number": {
+              "type": "string",
+              "description": "National ID or border number / رقم الهوية"
+            }
+          },
+          "required": ["iqama_number"]
+        }
+      }
+    },
+    "check_traffic_violations": {
+      "function": {
+        "name": "check_traffic_violations",
+        "description": "Check traffic violations and fines / الاستعلام عن المخالفات المرورية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "id_number": {
+              "type": "string",
+              "description": "National ID number / رقم الهوية الوطنية"
+            },
+            "plate_number": {
+              "type": "string",
+              "description": "Vehicle plate number / رقم لوحة السيارة"
+            }
+          },
+          "required": ["id_number"]
+        }
+      }
+    },
+    "book_government_appointment": {
+      "function": {
+        "name": "book_government_appointment",
+        "description": "Book an appointment at a government service / حجز موعد في خدمة حكومية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "service_type": {
+              "type": "string",
+              "description": "Type of government service / نوع الخدمة الحكومية"
+            },
+            "date": {
+              "type": "string",
+              "description": "Preferred date / التاريخ المفضل"
+            },
+            "location": {
+              "type": "string",
+              "description": "Preferred location/branch / الفرع المفضل"
+            }
+          },
+          "required": ["service_type"]
+        }
+      }
+    },
+    "calculate_end_of_service": {
+      "function": {
+        "name": "calculate_end_of_service",
+        "description": "Calculate end of service benefits / حساب مكافأة نهاية الخدمة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "salary": {
+              "type": "number",
+              "description": "Monthly salary / الراتب الشهري"
+            },
+            "years_of_service": {
+              "type": "number",
+              "description": "Years of employment / سنوات الخدمة"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Reason for end of service (resignation, termination, etc.) / سبب انتهاء الخدمة"
+            }
+          },
+          "required": ["salary", "years_of_service"]
+        }
+      }
+    }
+  },
+  "banking_finance": {
+    "convert_currency": {
+      "function": {
+        "name": "convert_currency",
+        "description": "Convert between currencies / تحويل العملات",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "description": "Amount to convert / المبلغ المراد تحويله"
+            },
+            "from_currency": {
+              "type": "string",
+              "description": "Source currency (SAR, USD, EGP, etc.) / العملة المصدر"
+            },
+            "to_currency": {
+              "type": "string",
+              "description": "Target currency / العملة الهدف"
+            }
+          },
+          "required": ["amount", "from_currency", "to_currency"]
+        }
+      }
+    },
+    "get_gold_price": {
+      "function": {
+        "name": "get_gold_price",
+        "description": "Get current gold prices / الحصول على أسعار الذهب الحالية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "karat": {
+              "type": "string",
+              "description": "Gold karat (24, 22, 21, 18) / عيار الذهب"
+            },
+            "currency": {
+              "type": "string",
+              "description": "Currency for price / العملة"
+            },
+            "unit": {
+              "type": "string",
+              "description": "Weight unit (gram, ounce) / وحدة الوزن"
+            }
+          },
+          "required": []
+        }
+      }
+    },
+    "calculate_loan": {
+      "function": {
+        "name": "calculate_loan",
+        "description": "Calculate loan payments and interest / حساب أقساط القرض والفوائد",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "type": "number",
+              "description": "Loan amount / مبلغ القرض"
+            },
+            "interest_rate": {
+              "type": "number",
+              "description": "Annual interest rate percentage / نسبة الفائدة السنوية"
+            },
+            "term_months": {
+              "type": "integer",
+              "description": "Loan term in months / مدة القرض بالأشهر"
+            }
+          },
+          "required": ["principal", "term_months"]
+        }
+      }
+    },
+    "transfer_money": {
+      "function": {
+        "name": "transfer_money",
+        "description": "Transfer money to another account / تحويل الأموال إلى حساب آخر",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "description": "Amount to transfer / المبلغ المراد تحويله"
+            },
+            "recipient": {
+              "type": "string",
+              "description": "Recipient name or account / اسم المستلم أو رقم الحساب"
+            },
+            "bank": {
+              "type": "string",
+              "description": "Recipient's bank / بنك المستلم"
+            }
+          },
+          "required": ["amount", "recipient"]
+        }
+      }
+    }
+  },
+  "ecommerce": {
+    "track_shipment": {
+      "function": {
+        "name": "track_shipment",
+        "description": "Track package shipment status / تتبع حالة الشحنة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "tracking_number": {
+              "type": "string",
+              "description": "Tracking number / رقم التتبع"
+            },
+            "carrier": {
+              "type": "string",
+              "description": "Shipping carrier (Aramex, DHL, etc.) / شركة الشحن"
+            }
+          },
+          "required": ["tracking_number"]
+        }
+      }
+    },
+    "compare_prices": {
+      "function": {
+        "name": "compare_prices",
+        "description": "Compare prices across stores / مقارنة الأسعار بين المتاجر",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "product": {
+              "type": "string",
+              "description": "Product name or description / اسم المنتج"
+            },
+            "category": {
+              "type": "string",
+              "description": "Product category / فئة المنتج"
+            }
+          },
+          "required": ["product"]
+        }
+      }
+    },
+    "calculate_customs": {
+      "function": {
+        "name": "calculate_customs",
+        "description": "Calculate customs duties and fees / حساب الرسوم الجمركية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "product_value": {
+              "type": "number",
+              "description": "Product value / قيمة المنتج"
+            },
+            "product_type": {
+              "type": "string",
+              "description": "Type of product / نوع المنتج"
+            },
+            "origin_country": {
+              "type": "string",
+              "description": "Country of origin / بلد المنشأ"
+            }
+          },
+          "required": ["product_value", "product_type"]
+        }
+      }
+    },
+    "order_food": {
+      "function": {
+        "name": "order_food",
+        "description": "Order food from a restaurant / طلب طعام من مطعم",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "restaurant": {
+              "type": "string",
+              "description": "Restaurant name / اسم المطعم"
+            },
+            "items": {
+              "type": "array",
+              "description": "List of food items / قائمة الأطعمة"
+            },
+            "delivery_address": {
+              "type": "string",
+              "description": "Delivery address / عنوان التوصيل"
+            }
+          },
+          "required": ["items"]
+        }
+      }
+    }
+  },
+  "travel": {
+    "search_flights": {
+      "function": {
+        "name": "search_flights",
+        "description": "Search for available flights / البحث عن رحلات طيران متاحة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "departure_city": {
+              "type": "string",
+              "description": "Departure city / مدينة المغادرة"
+            },
+            "arrival_city": {
+              "type": "string",
+              "description": "Arrival city / مدينة الوصول"
+            },
+            "departure_date": {
+              "type": "string",
+              "description": "Departure date / تاريخ المغادرة"
+            },
+            "return_date": {
+              "type": "string",
+              "description": "Return date (optional) / تاريخ العودة"
+            },
+            "passengers": {
+              "type": "integer",
+              "description": "Number of passengers / عدد المسافرين"
+            }
+          },
+          "required": ["departure_city", "arrival_city", "departure_date"]
+        }
+      }
+    },
+    "search_hotels": {
+      "function": {
+        "name": "search_hotels",
+        "description": "Search for available hotels / البحث عن فنادق متاحة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name / اسم المدينة"
+            },
+            "check_in": {
+              "type": "string",
+              "description": "Check-in date / تاريخ الوصول"
+            },
+            "check_out": {
+              "type": "string",
+              "description": "Check-out date / تاريخ المغادرة"
+            },
+            "guests": {
+              "type": "integer",
+              "description": "Number of guests / عدد الضيوف"
+            },
+            "stars": {
+              "type": "integer",
+              "description": "Hotel rating (1-5 stars) / تصنيف الفندق"
+            }
+          },
+          "required": ["city", "check_in", "check_out"]
+        }
+      }
+    },
+    "search_umrah_packages": {
+      "function": {
+        "name": "search_umrah_packages",
+        "description": "Search for Umrah travel packages / البحث عن باقات العمرة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "departure_city": {
+              "type": "string",
+              "description": "Departure city / مدينة المغادرة"
+            },
+            "duration_days": {
+              "type": "integer",
+              "description": "Trip duration in days / مدة الرحلة بالأيام"
+            },
+            "package_type": {
+              "type": "string",
+              "description": "Package type (economy, standard, VIP) / نوع الباقة"
+            },
+            "travel_date": {
+              "type": "string",
+              "description": "Preferred travel date / تاريخ السفر المفضل"
+            }
+          },
+          "required": ["departure_city"]
+        }
+      }
+    }
+  },
+  "healthcare": {
+    "book_doctor_appointment": {
+      "function": {
+        "name": "book_doctor_appointment",
+        "description": "Book an appointment with a doctor / حجز موعد مع طبيب",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "specialty": {
+              "type": "string",
+              "description": "Medical specialty / التخصص الطبي"
+            },
+            "doctor_name": {
+              "type": "string",
+              "description": "Doctor's name (optional) / اسم الطبيب"
+            },
+            "hospital": {
+              "type": "string",
+              "description": "Hospital or clinic / المستشفى أو العيادة"
+            },
+            "date": {
+              "type": "string",
+              "description": "Preferred date / التاريخ المفضل"
+            }
+          },
+          "required": ["specialty"]
+        }
+      }
+    },
+    "search_medications": {
+      "function": {
+        "name": "search_medications",
+        "description": "Search for medications and availability / البحث عن الأدوية وتوفرها",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "medication_name": {
+              "type": "string",
+              "description": "Medication name / اسم الدواء"
+            },
+            "pharmacy": {
+              "type": "string",
+              "description": "Specific pharmacy (optional) / اسم الصيدلية"
+            },
+            "location": {
+              "type": "string",
+              "description": "Location/city / الموقع أو المدينة"
+            }
+          },
+          "required": ["medication_name"]
+        }
+      }
+    },
+    "check_insurance_coverage": {
+      "function": {
+        "name": "check_insurance_coverage",
+        "description": "Check health insurance coverage / التحقق من تغطية التأمين الصحي",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "insurance_number": {
+              "type": "string",
+              "description": "Insurance policy number / رقم بوليصة التأمين"
+            },
+            "service_type": {
+              "type": "string",
+              "description": "Medical service type / نوع الخدمة الطبية"
+            },
+            "hospital": {
+              "type": "string",
+              "description": "Hospital name / اسم المستشفى"
+            }
+          },
+          "required": ["insurance_number"]
+        }
+      }
+    }
+  },
+  "weather": {
+    "get_weather": {
+      "function": {
+        "name": "get_weather",
+        "description": "Get current weather or forecast / الحصول على حالة الطقس أو التوقعات",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name / اسم المدينة"
+            },
+            "days": {
+              "type": "integer",
+              "description": "Forecast days (1-7) / عدد أيام التوقعات"
+            }
+          },
+          "required": ["city"]
+        }
+      }
+    },
+    "get_air_quality": {
+      "function": {
+        "name": "get_air_quality",
+        "description": "Get air quality index / الحصول على مؤشر جودة الهواء",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name / اسم المدينة"
+            }
+          },
+          "required": ["city"]
+        }
+      }
+    }
+  },
+  "utilities": {
+    "translate_text": {
+      "function": {
+        "name": "translate_text",
+        "description": "Translate text between languages / ترجمة النص بين اللغات",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "Text to translate / النص المراد ترجمته"
+            },
+            "source_language": {
+              "type": "string",
+              "description": "Source language / اللغة المصدر"
+            },
+            "target_language": {
+              "type": "string",
+              "description": "Target language / اللغة الهدف"
+            }
+          },
+          "required": ["text", "target_language"]
+        }
+      }
+    },
+    "calculate_math": {
+      "function": {
+        "name": "calculate_math",
+        "description": "Perform mathematical calculations / إجراء العمليات الحسابية",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "expression": {
+              "type": "string",
+              "description": "Mathematical expression / التعبير الرياضي"
+            },
+            "operation": {
+              "type": "string",
+              "description": "Operation type (add, subtract, multiply, divide, percentage) / نوع العملية"
+            }
+          },
+          "required": ["expression"]
+        }
+      }
+    },
+    "set_reminder": {
+      "function": {
+        "name": "set_reminder",
+        "description": "Set a reminder for a specific time / إنشاء تذكير لوقت محدد",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Reminder message / رسالة التذكير"
+            },
+            "time": {
+              "type": "string",
+              "description": "Reminder time / وقت التذكير"
+            },
+            "date": {
+              "type": "string",
+              "description": "Reminder date / تاريخ التذكير"
+            },
+            "repeat": {
+              "type": "string",
+              "description": "Repeat frequency (once, daily, weekly) / التكرار"
+            }
+          },
+          "required": ["message", "time"]
+        }
+      }
+    },
+    "get_current_time": {
+      "function": {
+        "name": "get_current_time",
+        "description": "Get current time in a specific timezone / الحصول على الوقت الحالي في منطقة زمنية محددة",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "description": "City name / اسم المدينة"
+            },
+            "timezone": {
+              "type": "string",
+              "description": "Timezone (optional) / المنطقة الزمنية"
+            }
+          },
+          "required": []
+        }
+      }
+    }
+  }
+}
