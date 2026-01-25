@@ -1,7 +1,3 @@
-# 📘 Deep Dive: Dataset Conversion Architecture & Logic
-
-**Target Audience:** Network Architects, Machine Learning Researchers, and Advanced Students.
-**Subject:** Programmatic Transformation of Natural Language Queries into Function-Calling Primitives.
 **File Reference:** `src/convert_dataset.py`
 
 ---
