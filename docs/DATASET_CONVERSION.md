@@ -44,7 +44,7 @@ flowchart TD
         SplitLogic --> SampleTransform[Function: convert_sample]
         
         subgraph Micro_Logic ["Sample Transformation Logic"]
-            InputVec[Input Vector: {Query, Function, Args}]
+            InputVec["Input Vector: {Query, Function, Args}"]
             
             subgraph Context_Inject ["Context Injection"]
                 DevPrompt[Inject Developer System Prompt]
