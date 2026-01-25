@@ -2,7 +2,7 @@
 
 The first Arabic on-device function-calling system using Google's FunctionGemma (270M parameters).
 
-## 🎯 Results
+##  Results
 
 | Metric | Value |
 |--------|-------|
