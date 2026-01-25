@@ -21,7 +21,7 @@ The first Arabic on-device function-calling system using Google's FunctionGemma 
 | Levantine | 62.5% |
 | Maghrebi | 60.0% |
 
-## 📦 Dataset
+##  Dataset
 
 **[Sa74ll/arabic-mobile-actions](https://huggingface.co/datasets/Sa74ll/arabic-mobile-actions)**
 
@@ -30,7 +30,7 @@ The first Arabic on-device function-calling system using Google's FunctionGemma 
 - 31 functions across 8 domains
 - Includes developer role for FunctionGemma compatibility
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 # Clone the repo
@@ -44,7 +44,7 @@ pip install torch transformers datasets
 python inference.py
 ```
 
-## 💡 Usage
+##  Usage
 
 ```python
 from inference import load_model, call_function
@@ -78,7 +78,7 @@ print(result["function_name"])  # get_weather
 print(result["arguments"])      # {"city": "الرياض"}
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 arabic-function-calling/
@@ -94,7 +94,7 @@ arabic-function-calling/
     └── processed/            # Converted dataset
 ```
 
-## 🔑 Key Discovery
+##  Key Discovery
 
 > **FunctionGemma requires a `developer` role message to activate function calling mode.**
 
@@ -107,7 +107,7 @@ messages = [
 ]
 ```
 
-## 📊 Domains Covered
+##  Domains Covered
 
 - Islamic Services (prayer times, Qibla, Zakat)
 - Government Services (visa, ID, traffic fines)
@@ -118,7 +118,7 @@ messages = [
 - E-commerce
 - Utilities
 
-## 📝 Citation
+##  Citation
 
 ```bibtex
 @dataset{arabic_mobile_actions,
