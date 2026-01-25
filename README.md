@@ -128,7 +128,3 @@ messages = [
   url = {https://huggingface.co/datasets/Sa74ll/arabic-mobile-actions}
 }
 ```
-
-## 📄 License
-
-Apache 2.0
