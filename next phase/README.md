@@ -59,7 +59,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 ---
 
-### 𝚽 Section 3: Optimization & Gradient Masking
+### 𝚽 Section 3: Optimisation & Gradient Masking
 
 We use **Supervised Fine-Tuning (SFT)** to minimize the **Cross-Entropy Loss** ($\mathcal{L}$).
 
