@@ -7,16 +7,17 @@ This guide provides a rigorous analysis of the fine-tuning process for **Functio
 
 ### 𝚽 Section 1: Low-Rank Adaptation (LoRA) - The Linear Algebra of Tuning
 
-In standard fine-tuning, we update the weight matrix W. For Gemma-270M, the total parameter count makes full-rank updates computationally prohibitive. LoRA solves this by approximating the weight update delta-W through low-rank decomposition.
+In standard fine-tuning, we update the weight matrix $W \in \mathbb{R}^{d \times k}$. For Gemma-270M, the total parameter count makes full-rank updates computationally prohibitive. LoRA solves this by approximating the weight update $\Delta W$ through low-rank decomposition.
 
 #### 1.1 The Fundamental Equation
 The forward pass through a LoRA-enhanced linear layer is defined as:
-**h = W0x + (alpha/r)(A * B)x**
 
-- **W0 (Frozen Weights):** The pre-trained weights from Google.
-- **A:** The "In-Projection" matrix, initialized with Gaussian noise.
-- **B:** The "Out-Projection" matrix, initialized to zero.
-- **r (Rank):** The dimension of the low-rank space.
+$$ h = W_{0}x + \frac{\alpha}{r}(A \times B)x $$
+
+- **$W_{0}$ (Frozen Weights):** The pre-trained weights from Google.
+- **$A \in \mathbb{R}^{d \times r}$:** The "In-Projection" matrix, initialized with Gaussian noise.
+- **$B \in \mathbb{R}^{r \times k}$:** The "Out-Projection" matrix, initialized to zero.
+- **$r$ (Rank):** The dimension of the low-rank space.
 
 #### 1.2 The Code-to-Math Mapping
 ```python
@@ -29,7 +30,7 @@ model = FastModel.get_peft_model(
 )
 ```
 **Pedagogical Deep Dive:**
-The scaling factor alpha/r (here 64/32 = 2) is essentially the "learning intensity." Since we are training a tiny model (270M) on a complex new task (Arabic), we use a high scaling factor to ensure the new "adapters" exert significant influence over the pre-trained output. By targeting all projections (including the MLP's `gate_proj`), we allow the model to learn both the **Attention** (how tokens relate) and the **Knowledge** (how to map Arabic words to JSON values).
+The scaling factor $\alpha/r$ (here $64/32 = 2$) is essentially the "learning intensity." Since we are training a tiny model (270M) on a complex new task (Arabic), we use a high scaling factor to ensure the new "adapters" exert significant influence over the pre-trained output. By targeting all projections (including the MLP's `gate_proj`), we allow the model to learn both the **Attention** (how tokens relate) and the **Knowledge** (how to map Arabic words to JSON values).
 
 ---
 
@@ -39,15 +40,18 @@ The primary bottleneck in transformer training is the storage of activations dur
 
 #### 2.1 The Memory Complexity Problem
 In standard training, memory scales linearly with the number of layers:
-**Memory_std = O(L * N * D)**
-Where L is layers, N is sequence length, and D is hidden dimension.
+
+$$ Memory_{std} = O(L \times N \times D) $$
+
+Where $L$ is layers, $N$ is sequence length, and $D$ is hidden dimension.
 
 #### 2.2 The Triton Optimization
-Unsloth utilizes custom **Triton Kernels** to implement **Selective Activation Recomputation**. Instead of storing the activation h, the system stores only the input and the random seed. During the backward pass, it re-executes the forward operation on-the-fly.
+Unsloth utilizes custom **Triton Kernels** to implement **Selective Activation Recomputation**. Instead of storing the activation $h$, the system stores only the input and the random seed. During the backward pass, it re-executes the forward operation on-the-fly.
 
 **Mathematical Result:**
 The memory complexity is reduced to being independent of the number of layers:
-**Memory_unsloth = O(N * D)**
+
+$$ Memory_{unsloth} = O(N \times D) $$
 
 **The Code Implementation:**
 ```python
@@ -61,15 +65,18 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 ### 𝚽 Section 3: Optimization & Gradient Masking
 
-We use **Supervised Fine-Tuning (SFT)** to minimize the **Cross-Entropy Loss (L)**.
+We use **Supervised Fine-Tuning (SFT)** to minimize the **Cross-Entropy Loss** ($L$).
 
 #### 3.1 The Loss Function
-**L = - sum( log P( x_t | x_<t ) )**
+The objective is to minimize the negative log-likelihood of the target tokens:
+
+$$ L = - \sum_{t} \log P(x_{t} | x_{<t}) $$
 
 #### 3.2 Label Masking for Precision
 To prevent the model from wasting capacity learning the user's prompt, we apply a mask. 
+
 **The Logic:**
-We set labels for instruction tokens to -100. In the PyTorch implementation of Cross-Entropy, any label with value -100 is ignored in the sum.
+We set labels for instruction tokens to $-100$. In the PyTorch implementation of Cross-Entropy, any label with value $-100$ is ignored in the sum.
 
 **The Code Implementation:**
 ```python
@@ -79,7 +86,7 @@ trainer = train_on_responses_only(
     response_part = "<start_of_turn>model\n",
 )
 ```
-**Academic Insight:** This forces the gradient (delta-L) to only reflect errors in the model's function-calling response. It ensures the model's weights are only updated to better understand "how to act," not "how to repeat the user."
+**Academic Insight:** This forces the gradient $\nabla L$ to only reflect errors in the model's function-calling response. It ensures the model's weights are only updated to better understand "how to act," not "how to repeat the user."
 
 ---
 
@@ -91,7 +98,9 @@ We use a **Warmup-then-Decay** strategy to navigate the loss landscape.
 - **Cosine Decay:** Smoothly reduces the LR to zero.
 
 #### 4.2 The Decay Equation
-**eta_t = eta_min + 0.5 * (eta_max - eta_min) * (1 + cos( (T_cur / T_max) * pi ))**
+The learning rate $\eta$ at step $t$ follows:
+
+$$ \eta_{t} = \eta_{min} + \frac{1}{2}(\eta_{max} - \eta_{min})(1 + \cos(\frac{T_{cur}}{T_{max}}\pi)) $$
 
 **The Code Implementation:**
 ```python
@@ -101,6 +110,6 @@ args = SFTConfig(
     warmup_steps = 200,         # Ramp-up period
 )
 ```
-**Deep Dive:** The high peak LR (10^-3) is necessary because the LoRA rank r=32 represents a very narrow path in the total parameter space. We need a strong gradient to "push" the model into the specific manifold required for Arabic function calling.
+**Deep Dive:** The high peak LR ($10^{-3}$) is necessary because the LoRA rank $r=32$ represents a very narrow path in the total parameter space. We need a strong gradient to "push" the model into the specific manifold required for Arabic function calling.
 
 ---
