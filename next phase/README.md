@@ -65,12 +65,18 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 ### 𝚽 Section 3: Optimization & Gradient Masking
 
-We use **Supervised Fine-Tuning (SFT)** to minimize the **Cross-Entropy Loss** ($L$).
+We use **Supervised Fine-Tuning (SFT)** to minimize the **Autoregressive Negative Log-Likelihood (NLL)**, which is the mathematical basis for Cross-Entropy Loss in Language Models.
 
-#### 3.1 The Loss Function
-The objective is to minimize the negative log-likelihood of the target tokens:
+#### 3.1 The Loss Function (In-Depth)
+The objective is to minimize the total "surprise" of the model when predicting the ground-truth tokens in your Arabic dataset:
 
-$$ L = - \sum_{t} \log P(x_{t} | x_{<t}) $$
+$$ L = - \sum_{t=1}^{T} \log P(x_{t} | x_{<t}, \theta) $$
+
+**Deep Breakdown of the Equation:**
+- **$P(x_{t} | x_{<t}, \theta)$:** This represents the probability assigned by the model (parameterized by $\theta$) to the correct token at position $t$, given all preceding tokens $x_{<t}$.
+- **$\log$:** We take the logarithm because it transforms the product of probabilities into a sum of log-probabilities, which is numerically stable and simplifies the calculation of the gradient $\nabla L$.
+- **$\sum_{t=1}^{T}$:** We sum the log-probabilities across the entire sequence of length $T$.
+- **Negative Sign ($-$)**: Since probabilities are $\leq 1$, their logs are $\leq 0$. We negate the sum so that we are **minimizing** a positive value. As $L$ approaches 0, the model becomes "certain" of the correct output.
 
 #### 3.2 Label Masking for Precision
 To prevent the model from wasting capacity learning the user's prompt, we apply a mask. 
